@@ -35,8 +35,35 @@ class _TodoScreenState extends State<TodoScreen> {
                   icon: Icon(Icons.add),
                 ),
               ],
-            )
+            ),
             //display list panel
+            Expanded(
+              child: ListView.builder(
+                itemCount: 5,
+                itemBuilder: (context, index) {
+                  return CheckboxListTile(
+                      controlAffinity: ListTileControlAffinity.leading,
+                      onChanged: (v) {},
+                      value: false,
+                      title: Text('Task 1'),
+                      secondary: SizedBox(
+                        width: 80,
+                        child: Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {},
+                              icon: Icon(Icons.edit),
+                            ),
+                            IconButton(
+                              onPressed: () {},
+                              icon: Icon(Icons.delete),
+                            ),
+                          ],
+                        ),
+                      ));
+                },
+              ),
+            )
           ],
         ));
   }
