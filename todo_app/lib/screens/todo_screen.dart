@@ -8,6 +8,10 @@ class TodoScreen extends StatefulWidget {
 }
 
 class _TodoScreenState extends State<TodoScreen> {
+  List tasks = [
+    {"id": 1, "title": "Buy iPhone", "isCompleted": false}
+  ];
+  TextEditingController txtTitle = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,6 +27,7 @@ class _TodoScreenState extends State<TodoScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
+                      controller: txtTitle,
                       decoration: InputDecoration(
                         hintText: 'Enter title',
                         labelText: 'Title',
@@ -31,7 +36,18 @@ class _TodoScreenState extends State<TodoScreen> {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    //todo add/update task
+                    if (txtTitle.text.isNotEmpty) {
+                      tasks.add({
+                        "id": 1,
+                        "title": txtTitle.text,
+                        "isCompleted": false
+                      });
+                      txtTitle.clear();
+                    }
+                    setState(() {});
+                  },
                   icon: Icon(Icons.add),
                 ),
               ],
@@ -39,13 +55,25 @@ class _TodoScreenState extends State<TodoScreen> {
             //display list panel
             Expanded(
               child: ListView.builder(
-                itemCount: 5,
+                itemCount: tasks.length,
                 itemBuilder: (context, index) {
                   return CheckboxListTile(
                       controlAffinity: ListTileControlAffinity.leading,
-                      onChanged: (v) {},
-                      value: false,
-                      title: Text('Task 1'),
+                      onChanged: (v) {
+                        tasks[index]["isCompleted"] = v;
+                        setState(() {});
+                      },
+                      value: tasks[index]["isCompleted"],
+                      title: Text(
+                        '${tasks[index]["title"]}',
+                        style: TextStyle(
+                            decoration: tasks[index]["isCompleted"]
+                                ? TextDecoration.lineThrough
+                                : TextDecoration.none,
+                            color: tasks[index]["isCompleted"]
+                                ? Colors.red
+                                : Colors.black),
+                      ),
                       secondary: SizedBox(
                         width: 80,
                         child: Row(
