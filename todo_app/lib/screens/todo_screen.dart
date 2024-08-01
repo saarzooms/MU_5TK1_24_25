@@ -11,6 +11,7 @@ class _TodoScreenState extends State<TodoScreen> {
   List tasks = [
     {"id": 1, "title": "Buy iPhone", "isCompleted": false}
   ];
+  int selId = 0; //selected item id
   TextEditingController txtTitle = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -39,11 +40,23 @@ class _TodoScreenState extends State<TodoScreen> {
                   onPressed: () {
                     //todo add/update task
                     if (txtTitle.text.isNotEmpty) {
-                      tasks.add({
-                        "id": 1,
-                        "title": txtTitle.text,
-                        "isCompleted": false
-                      });
+                      if (selId == 0) {
+                        tasks.add({
+                          "id": DateTime.now().millisecondsSinceEpoch,
+                          "title": txtTitle.text,
+                          "isCompleted": false
+                        });
+                      } else {
+                        int idx =
+                            tasks.indexWhere((element) => element.id == selId);
+                        if (idx > -1) {
+                          var todo = tasks[idx];
+                          todo['title'] = txtTitle.text;
+                          tasks.removeAt(idx);
+                          tasks.insert(idx, todo);
+                        }
+                      }
+
                       txtTitle.clear();
                     }
                     setState(() {});
@@ -65,7 +78,7 @@ class _TodoScreenState extends State<TodoScreen> {
                       },
                       value: tasks[index]["isCompleted"],
                       title: Text(
-                        '${tasks[index]["title"]}',
+                        '${tasks[index]["title"]} ${tasks[index]["id"]}',
                         style: TextStyle(
                             decoration: tasks[index]["isCompleted"]
                                 ? TextDecoration.lineThrough
@@ -79,11 +92,19 @@ class _TodoScreenState extends State<TodoScreen> {
                         child: Row(
                           children: [
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                txtTitle.text = tasks[index]['title'];
+                                selId = tasks[index]['id'];
+                                setState(() {});
+                              },
                               icon: Icon(Icons.edit),
                             ),
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                //to perform delete
+                                tasks.removeAt(index);
+                                setState(() {});
+                              },
                               icon: Icon(Icons.delete),
                             ),
                           ],
