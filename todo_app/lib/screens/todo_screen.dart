@@ -47,13 +47,14 @@ class _TodoScreenState extends State<TodoScreen> {
                           "isCompleted": false
                         });
                       } else {
-                        int idx =
-                            tasks.indexWhere((element) => element.id == selId);
+                        int idx = tasks
+                            .indexWhere((element) => element["id"] == selId);
                         if (idx > -1) {
                           var todo = tasks[idx];
                           todo['title'] = txtTitle.text;
                           tasks.removeAt(idx);
                           tasks.insert(idx, todo);
+                          selId = 0;
                         }
                       }
 
