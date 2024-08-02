@@ -14,6 +14,7 @@ class _GstCalcScreenState extends State<GstCalcScreen> {
   var igst = 0.0;
   var cgst = 0.0;
   var sgst = 0.0;
+  bool isGst = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,6 +24,15 @@ class _GstCalcScreenState extends State<GstCalcScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            SwitchListTile(
+              value: isGst,
+              onChanged: (v) {
+                setState(() {
+                  isGst = v;
+                });
+              },
+              title: Text('GST'),
+            ),
             TextField(
               controller: txtAmnt,
               decoration: InputDecoration(
@@ -49,16 +59,29 @@ class _GstCalcScreenState extends State<GstCalcScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                //calculate gst components and total amount
-                if (txtAmnt.text.isNotEmpty && txtGst.text.isNotEmpty) {
-                  igst = double.parse(txtAmnt.text) *
-                      double.parse(txtGst.text) *
-                      0.01;
-                  cgst = igst * 0.5;
-                  sgst = igst * 0.5;
-                  txtTotalAmnt.text =
-                      (double.parse(txtAmnt.text) + igst).toString();
-                  setState(() {});
+                if (isGst) {
+                  //calculate gst components and total amount
+                  if (txtAmnt.text.isNotEmpty && txtGst.text.isNotEmpty) {
+                    igst = double.parse(txtAmnt.text) *
+                        double.parse(txtGst.text) *
+                        0.01;
+                    cgst = igst * 0.5;
+                    sgst = igst * 0.5;
+                    txtTotalAmnt.text =
+                        (double.parse(txtAmnt.text) + igst).toString();
+                    setState(() {});
+                  }
+                } else {
+                  //calculate gst components and  amount
+                  if (txtTotalAmnt.text.isNotEmpty && txtGst.text.isNotEmpty) {
+                    var amnt = double.parse(txtTotalAmnt.text) /
+                        (1 + (double.parse(txtGst.text) * 0.01));
+                    igst = amnt * double.parse(txtGst.text) * 0.01;
+                    cgst = igst * 0.5;
+                    sgst = igst * 0.5;
+                    txtAmnt.text = amnt.toStringAsFixed(2);
+                    setState(() {});
+                  }
                 }
               },
               child: Text('Calculate'),
