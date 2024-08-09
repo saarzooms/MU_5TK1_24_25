@@ -23,14 +23,14 @@ class _SplashScreenState extends State<SplashScreen> {
       String uname = await prefs.getString('unm') ?? '';
       if (uname == '') {
 //navigate to login screen
-        Navigator.of(context).push(
+        Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => LoginScreen(),
           ),
         );
       } else {
 //navigate to login screen
-        Navigator.of(context).push(
+        Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => MasterScreen(),
           ),
