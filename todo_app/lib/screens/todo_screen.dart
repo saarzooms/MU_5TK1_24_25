@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../models/todo.dart';
+import '../services/api_call.dart';
+
 class TodoScreen extends StatefulWidget {
   const TodoScreen({super.key});
 
@@ -8,10 +11,20 @@ class TodoScreen extends StatefulWidget {
 }
 
 class _TodoScreenState extends State<TodoScreen> {
-  List tasks = [
-    {"id": 1, "title": "Buy iPhone", "isCompleted": false}
-  ];
+  List<Todo> tasks = [];
   int selId = 0; //selected item id
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  fetchData() async {
+    tasks = await APICall.fetchTodos();
+    setState(() {});
+  }
+
   TextEditingController txtTitle = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -41,17 +54,16 @@ class _TodoScreenState extends State<TodoScreen> {
                     //todo add/update task
                     if (txtTitle.text.isNotEmpty) {
                       if (selId == 0) {
-                        tasks.add({
-                          "id": DateTime.now().millisecondsSinceEpoch,
-                          "title": txtTitle.text,
-                          "isCompleted": false
-                        });
+                        tasks.add(Todo(
+                            id: DateTime.now().millisecondsSinceEpoch,
+                            task: txtTitle.text,
+                            completed: false));
                       } else {
-                        int idx = tasks
-                            .indexWhere((element) => element["id"] == selId);
+                        int idx =
+                            tasks.indexWhere((element) => element.id == selId);
                         if (idx > -1) {
                           var todo = tasks[idx];
-                          todo['title'] = txtTitle.text;
+                          todo.task = txtTitle.text;
                           tasks.removeAt(idx);
                           tasks.insert(idx, todo);
                           selId = 0;
@@ -74,28 +86,28 @@ class _TodoScreenState extends State<TodoScreen> {
                   return CheckboxListTile(
                       controlAffinity: ListTileControlAffinity.leading,
                       onChanged: (v) {
-                        tasks[index]["isCompleted"] = v;
+                        tasks[index].completed = v;
                         setState(() {});
                       },
-                      value: tasks[index]["isCompleted"],
+                      value: tasks[index].completed,
                       title: Text(
-                        '${tasks[index]["title"]} ${tasks[index]["id"]}',
+                        '${tasks[index].task} ${tasks[index].id}',
                         style: TextStyle(
-                            decoration: tasks[index]["isCompleted"]
+                            decoration: tasks[index].completed!
                                 ? TextDecoration.lineThrough
                                 : TextDecoration.none,
-                            color: tasks[index]["isCompleted"]
+                            color: tasks[index].completed!
                                 ? Colors.red
                                 : Colors.black),
                       ),
                       secondary: SizedBox(
-                        width: 80,
+                        width: 100,
                         child: Row(
                           children: [
                             IconButton(
                               onPressed: () {
-                                txtTitle.text = tasks[index]['title'];
-                                selId = tasks[index]['id'];
+                                txtTitle.text = tasks[index].task!;
+                                selId = tasks[index].id!;
                                 setState(() {});
                               },
                               icon: Icon(Icons.edit),
