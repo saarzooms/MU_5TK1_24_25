@@ -17,7 +17,7 @@ class CounterScreen extends StatelessWidget {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            GetBuilder(
+            GetX(
                 init: CounterController(),
                 builder: (c) {
                   return Text(

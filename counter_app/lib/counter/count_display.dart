@@ -15,14 +15,12 @@ class CountDisplay extends StatelessWidget {
         ),
         body: Column(
           children: [
-            GetBuilder(
-                init: CounterController(),
-                builder: (c) {
-                  return Text(
-                    "Counter : ${controller.count}",
-                    style: TextStyle(fontSize: 40),
-                  );
-                }),
+            Obx(() {
+              return Text(
+                "Counter : ${controller.count}",
+                style: TextStyle(fontSize: 40),
+              );
+            }),
             ElevatedButton(
                 onPressed: () {
                   controller.double();
