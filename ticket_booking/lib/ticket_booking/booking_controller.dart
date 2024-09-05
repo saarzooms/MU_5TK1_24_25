@@ -17,5 +17,12 @@ class BookingController extends GetxController {
     price.value = double.parse(txtPrice.text);
   }
 
-  bookTicket() {}
+  bookTicket() {
+    var cnt = int.parse(txtCount.text);
+    bookings.add(BookingModel(txtName.text, cnt));
+    booked.value += cnt;
+    txtName.clear();
+    txtCount.clear();
+    Get.snackbar('Success', 'Booking done successfully');
+  }
 }
