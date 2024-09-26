@@ -59,7 +59,7 @@ class BookingPage extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.yellow,
+                        color: index % 2 == 0 ? Colors.grey : Colors.yellow,
                       ),
                       alignment: Alignment.center,
                       child: Text('${index + 1}'),

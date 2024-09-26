@@ -1,0 +1,6 @@
+
+notes_app/android/app/google-services.json
+clean.bat
+notes_app/firebase-tools-instant-win.exe
+notes_app/firebase.json
+notes_app/lib/firebase_options.dart
