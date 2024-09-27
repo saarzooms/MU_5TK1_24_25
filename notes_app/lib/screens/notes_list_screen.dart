@@ -33,9 +33,15 @@ class NotesListScreen extends StatelessWidget {
                   id: document.id,
                   title: data['title'],
                   description: data['description']);
-              return ListTile(
-                title: Text(note.title!),
-                subtitle: Text(note.description!),
+              return GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => NotesDetailScreen(note: note)));
+                },
+                child: ListTile(
+                  title: Text(note.title!),
+                  subtitle: Text(note.description!),
+                ),
               );
             }).toList(),
           );
