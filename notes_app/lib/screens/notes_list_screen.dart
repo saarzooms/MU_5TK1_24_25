@@ -22,29 +22,36 @@ class NotesListScreen extends StatelessWidget {
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("Loading");
+            return Center(child: CircularProgressIndicator());
           }
 
-          return ListView(
-            children: snapshot.data!.docs.map((DocumentSnapshot document) {
-              Map<String, dynamic> data =
-                  document.data()! as Map<String, dynamic>;
-              Note note = Note(
-                  id: document.id,
-                  title: data['title'],
-                  description: data['description']);
-              return GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => NotesDetailScreen(note: note)));
-                },
-                child: ListTile(
-                  title: Text(note.title!),
-                  subtitle: Text(note.description!),
-                ),
-              );
-            }).toList(),
-          );
+          return snapshot.data!.docs.length > 0
+              ? ListView(
+                  children:
+                      snapshot.data!.docs.map((DocumentSnapshot document) {
+                    Map<String, dynamic> data =
+                        document.data()! as Map<String, dynamic>;
+                    Note note = Note(
+                        id: document.id,
+                        title: data['title'],
+                        description: data['description']);
+                    return GestureDetector(
+                      onDoubleTap: () {
+                        FirebaseServices().deleteNote(note.id);
+                      },
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                NotesDetailScreen(note: note)));
+                      },
+                      child: ListTile(
+                        title: Text(note.title!),
+                        subtitle: Text(note.description!),
+                      ),
+                    );
+                  }).toList(),
+                )
+              : Center(child: Text('Oops no notes available!!!'));
         },
       ),
       floatingActionButton: FloatingActionButton(

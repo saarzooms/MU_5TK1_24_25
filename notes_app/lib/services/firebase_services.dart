@@ -28,4 +28,13 @@ class FirebaseServices {
         .then((value) => print("Note Updated"))
         .catchError((error) => print("Failed to update Note: $error"));
   }
+
+  deleteNote(id) {
+    return db
+        .collection("notes")
+        .doc(id)
+        .delete()
+        .then((value) => print("Note Deleted"))
+        .catchError((error) => print("Failed to Note user: $error"));
+  }
 }

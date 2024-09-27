@@ -36,7 +36,11 @@ class _NotesDetailScreenState extends State<NotesDetailScreen> {
         description: _content,
       );
 //todo code to store on firestore
-      FirebaseServices().addNote(_title, _content);
+      if (widget.note == null) {
+        FirebaseServices().addNote(_title, _content);
+      } else {
+        FirebaseServices().updateNote(widget.note!);
+      }
       Navigator.pop(context);
     }
   }
