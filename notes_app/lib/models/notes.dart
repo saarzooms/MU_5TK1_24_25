@@ -1,6 +1,6 @@
-class Notes {
-  String title;
-  String description;
-  String id;
-  Notes(this.title, this.description, this.id);
+class Note {
+  String? title;
+  String? description;
+  String? id;
+  Note({this.title, this.description, this.id});
 }
