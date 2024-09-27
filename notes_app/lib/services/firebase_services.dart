@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../models/notes.dart';
+
 class FirebaseServices {
   var db = FirebaseFirestore.instance;
   addNote(String title, String description) {
@@ -16,5 +18,14 @@ class FirebaseServices {
         FirebaseFirestore.instance.collection('notes').snapshots();
     return collectionStream;
 // Stream documentStream = FirebaseFirestore.instance.collection('users').doc('ABC123').snapshots();
+  }
+
+  updateNote(Note note) {
+    return db
+        .collection("notes")
+        .doc(note.id)
+        .update({'title': note.title, 'description': note.description})
+        .then((value) => print("Note Updated"))
+        .catchError((error) => print("Failed to update Note: $error"));
   }
 }
