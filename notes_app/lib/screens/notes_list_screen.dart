@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_app/services/firebase_services.dart';
 
+import '../models/notes.dart';
 import 'notes_detail_screen.dart';
 
 class NotesListScreen extends StatelessWidget {
@@ -28,9 +29,13 @@ class NotesListScreen extends StatelessWidget {
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
               Map<String, dynamic> data =
                   document.data()! as Map<String, dynamic>;
+              Note note = Note(
+                  id: document.id,
+                  title: data['title'],
+                  description: data['description']);
               return ListTile(
-                title: Text(data['title']),
-                subtitle: Text(data['description']),
+                title: Text(note.title!),
+                subtitle: Text(note.description!),
               );
             }).toList(),
           );
