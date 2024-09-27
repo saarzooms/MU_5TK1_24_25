@@ -10,4 +10,11 @@ class FirebaseServices {
     db.collection("notes").add(note).then((DocumentReference doc) =>
         print('DocumentSnapshot added with ID: ${doc.id}'));
   }
+
+  Stream<QuerySnapshot> fetchNotes() {
+    Stream<QuerySnapshot> collectionStream =
+        FirebaseFirestore.instance.collection('notes').snapshots();
+    return collectionStream;
+// Stream documentStream = FirebaseFirestore.instance.collection('users').doc('ABC123').snapshots();
+  }
 }
